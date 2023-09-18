@@ -39,21 +39,31 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 3rd Parties
     "rest_framework",
+    "corsheaders",
     # local apps
     "blog.apps.BlogConfig",
     "accounts.apps.AccountsConfig",
 ]
-
+REST_FRAMEWORK = {  # new
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
+}
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:3000",
+    "http://localhost:8000",
+)
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 ROOT_URLCONF = "DjangoBlog.urls"
 
 TEMPLATES = [
