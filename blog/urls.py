@@ -3,5 +3,5 @@ from .views import PostListApi, PostDetailApi
 
 urlpatterns = [
     path("post/", PostListApi.as_view(), name="post-list"),
-    path("post/<int:post_id>", PostDetailApi.as_view(), name="post-detail"),
+    path("post/<int:pk>", PostDetailApi.as_view(), name="post-detail"),
 ]

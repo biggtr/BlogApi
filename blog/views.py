@@ -1,21 +1,27 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, permissions
 from .models import Post
 from .serializers import PostSerializer
+from .permissions import IsAuthorOrReadOnly
 
 # Create your views here.
 
 
 class PostListApi(generics.ListCreateAPIView):
     serializer_class = PostSerializer
-    queryset = Post.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        return serializer.save(author=self.request.user)
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user)
 
 
 class PostDetailApi(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = PostSerializer
     queryset = Post.objects.all()
-    # lookup_field = "post_id"
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthorOrReadOnly]
 
-    def get_object(self):
-        post_id = self.kwargs["post_id"]
-        return Post.objects.get(id=post_id)
+    def perform_update(self, serializer):
+        return serializer.save(author=self.request.user)

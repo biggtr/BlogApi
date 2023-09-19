@@ -12,3 +12,4 @@ class PostSerializer(serializers.ModelSerializer):
             "body",
             "created_at",
         ]
+        read_only_fields = ["author"]  # Make 'author' field read-only during updates
